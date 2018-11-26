@@ -17,6 +17,8 @@ def save_to_csv(filename, legend, results_list):
         csv_writer.writerows(results_list)
 
 def multi_runs_mnist(epochs, n_runs, names, network_builders, batches_size=20):
+    if type(network_builders) != list:
+        network_builders = [network_builders for _ in names]
     if type(batches_size) == int:
         batches_size = [batches_size for _ in zip(names, network_builders)]
     for name, network_builder, batch_size in zip(names, network_builders, batches_size):
