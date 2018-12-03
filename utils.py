@@ -28,14 +28,12 @@ def multi_runs_mnist(epochs, n_runs, names, network_builders, batches_size=32, m
     for name, network_builder, batch_size in zip(names, network_builders, batches_size):
         metrics = {metric : [] for metric in metrics}
         xs = []
-        print(name)
         for i in range(n_runs):
             model = network_builder()
             logger = Tester(30000, x_test, y_test)
             model.fit(x_train, y_train, epochs=epochs,batch_size=batch_size, callbacks=[logger])
             for metric, results in metrics.items():
                 results.append(list(zip(logger.logs[metric[0]], logger.logs[metric[1]])))
-        print(metrics)
         for (x,y), results in metrics.items():
             xs = [res[0] for res in results[0]]
             results = [[point[1] for point in result] for result in results]
